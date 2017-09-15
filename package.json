@@ -1,0 +1,9 @@
+{
+  "name": "ns_boilerplate",
+  "version": "0.0.1",
+  "description": "A boilerplate for creating new projects",
+  "main": "index.js",
+  "repository": "https://github.com/alvinwhite/ns_boilerplate",
+  "author": "Alvvi ",
+  "license": "MIT"
+}
