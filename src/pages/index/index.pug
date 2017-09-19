@@ -1,0 +1,19 @@
+include /../node_modules/bemto.pug/bemto.pug
+include ../../components/Welcome/Welcome.pug
+- set_bemto_settings({ modifier: '--' })
+
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        meta(http-equiv="X-UA-Compatible", content="ie=edge")
+        meta(name='imagetoolbar' content='no')
+        meta(name='msthemecompatible' content='no')
+        meta(name='cleartype' content='on')
+        meta(name='HandheldFriendly' content='True')
+        meta(name="msapplication-TileColor" content='#ffffff')
+        meta(name='theme-color' content='#ffffff')
+        title NS UI Boilerplate
+    body.page
+        +Welcome()

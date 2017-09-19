@@ -1,0 +1,126 @@
+
+@-ms-viewport {
+    width: device-width
+}
+
+html {
+    box-sizing: border-box;
+    -ms-overflow-style: scrollbar
+}
+
+*,
+:after,
+:before {
+    -webkit-box-sizing: inherit;
+    box-sizing: inherit
+}
+
+$grid = {
+    "sm": {
+        viewport: 576px,
+        gutters: 16px,
+        columns: 12,
+        container: 540px,
+    },
+    "md": {
+        viewport: 768px,
+        container: 720px,
+        gutters: 16px,
+    },
+    "lg": {
+        viewport: 992px,
+        container: 960px,
+        gutters: 16px,
+    }
+    "xl": {
+        viewport: 1200px,
+        container: 1200px,
+        gutters: 16px,
+    }
+}
+
+$base = values($grid)[0];
+
+.grid {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    padding-right: $base.gutters;
+    padding-left: $base.gutters
+}
+
+for $name, $breakpoint in $grid {
+    @media (min-width: $breakpoint.viewport) {
+
+        if(gutters in $breakpoint) {
+            .grid {
+                padding-left: $breakpoint.gutters;
+                padding-right: $breakpoint.gutters;
+            }
+        }
+
+        .grid:not(.grid--fluid) {
+            width: $breakpoint.container;
+            max-width: 100%
+        }
+    }
+}
+
+.grid__row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -($base.gutters);
+    margin-left: -($base.gutters);
+
+    &--gutters_none {
+        margin-right: 0;
+        margin-left: 0
+
+        .grid__col {
+            padding-right: 0;
+            padding-left: 0
+        }
+    }
+}
+
+
+.grid__col {
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    padding-right: $base.gutters;
+    padding-left: $base.gutters;
+
+    flex-basis: 0;
+    flex-grow: 1;
+    max-width: 100%;
+
+    &--auto {
+        flex: 0 0 auto;
+        width: auto
+    }
+}
+
+for $i in (1..$base.columns) {
+        .grid__col--{$i} {
+            flex: 0 0 $i * (100% / $base.columns);
+            max-width: $i * (100% / $base.columns);
+        }
+        .grid__col--offset-{$i} {
+            margin-left: $i * (100% / $base.columns);
+        }
+    }
+
+for $name, $breakpoint in $grid {
+    @media (min-width: $breakpoint.viewport) {
+        for $i in (1..$base.columns) {
+            .grid__col--{$name}_{$i} {
+                flex: 0 0 $i * (100% / $base.columns);
+                max-width: $i * (100% / $base.columns);
+            }
+            .grid__col--offset-{$name}_{$i} {
+                margin-left: $i * (100% / $base.columns);
+            }
+        }
+    }
+}

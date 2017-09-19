@@ -1,0 +1,22 @@
+heading_fonts($size = 'md', $color = $text_main,$weight = normal, $family = $font_headings) {
+    font-family: $family;
+    font-size: lookup( '$fz_heading_' + $size);
+    font-weight: $weight;
+    color: $color;
+
+    // Adjust font-size for lg headings
+    if ($size == 'lg') {
+    }
+
+    // Adjust font-size for md headings
+    if($size == 'md') {
+    }
+
+    // Adjust font-size for sm headings
+    if($size == 'sm') {
+    }
+
+    // Adjust font-size for xs headings
+    if ($size == 'xs') {
+    }
+}
