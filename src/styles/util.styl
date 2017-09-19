@@ -1,4 +1,10 @@
-heading_fonts($size = 'md', $color = $text_main,$weight = normal, $family = $font_headings) {
+heading_fonts($options = {}) {
+
+    $size =  $options.size      || 'md'
+    $color = $options.color     || $text_main
+    $weight = $options.weight   || bold
+    $family = $options.family   || $font_headings
+
     font-family: $family;
     font-size: lookup( '$fz_heading_' + $size);
     font-weight: $weight;
