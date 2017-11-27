@@ -11,7 +11,7 @@ module.exports = {
     "rules": {
         "indent": ["warn", 4],
         "quotes": ["warn", "single"],
-        "semi": ["error", "always"],
+        "semi": ["error", "never"],
         "no-console": "off",
         "no-unused-vars": "off",
     }
