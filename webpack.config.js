@@ -1,18 +1,31 @@
-const path = require('path');
-const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const StyleExtHtmlWebpackPlugin = require('style-ext-html-webpack-plugin');
-var HtmlWebpackExcludeAssetsPlugin = require('html-webpack-exclude-assets-plugin');
+const path = require('path')
+const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const StyleExtHtmlWebpackPlugin = require('style-ext-html-webpack-plugin')
+const HtmlWebpackExcludeAssetsPlugin = require('html-webpack-exclude-assets-plugin')
+const { getDirectoriesBasenames } = require('./utils.js')
+const isProd = process.env.NODE_ENV.trim() == 'production'
 
+const pages = getDirectoriesBasenames(path.resolve('./src/pages'))
 
-const isProd = process.env.NODE_ENV.trim() == 'production';
+const instances = pages.map(page => {
+    return new HtmlWebpackPlugin({
+        template: `./pages/${page}/${page}.pug`,
+        excludeAssets: [/\-critical.css$/],
+        filename: `${page}.html`
+    })
+})
 
-const criticalCSS = new ExtractTextPlugin('[name]-critical.css');
-const externalCSS = new ExtractTextPlugin('[name].css');
+const entries = pages.reduce((acc, page, i) => {
+    acc[page] = `./pages/${page}/${page}.js`
+    return acc
+}, {})
 
-const processCSS = [{
+const criticalCSS = new ExtractTextPlugin('[name]-critical.css')
+const externalCSS = new ExtractTextPlugin('[name].css')
+const processStyles = [{
     loader: 'css-loader',
     options: {
         importLoaders: 1,
@@ -30,20 +43,26 @@ const processCSS = [{
         sourceMap: !isProd,
         'resolve url': true,
     }
-}];
+}]
+
 
 const config = {
     context: path.resolve(__dirname, 'src'),
-    entry: './pages/index/index.js',
+    entry: entries,
     output: {
         filename: '[name].js',
         path: path.resolve(__dirname, 'dist'),
     },
     resolve: {
         extensions: ['.js', '.styl', '.pug'],
+        alias: {
+            'Components': path.resolve(__dirname, 'src/components/'),
+            '@': path.resolve(__dirname, 'src')
+        }
     },
     module: {
-        rules: [{
+        rules: [
+        {
             test: /\.js$/,
             loader: 'eslint-loader',
             enforce: 'pre',
@@ -60,10 +79,10 @@ const config = {
         }, {
             test: /\.styl$/,
             exclude: /\-critical.styl$/,
-            use: externalCSS.extract({ use: processCSS })
+            use: externalCSS.extract({ use: processStyles })
         }, {
             test: /\-critical.styl$/,
-            use: criticalCSS.extract({ use: processCSS })
+            use: criticalCSS.extract({ use: processStyles })
         }, {
             test: /\.(svg|png|jpg|gif|otf|ttf|woff|woff2)$/,
             use: [{
@@ -73,8 +92,7 @@ const config = {
                     name: '[path][name].[ext]'
                 }
             }]
-        },
-        {
+        }, {
             test: /\.pug$/,
             use: ['html-loader', {
                 loader: 'pug-html-loader',
@@ -103,7 +121,7 @@ const config = {
             position: 'head-top'
         })
     ]
-};
+}
 
 
 if (isProd) {
@@ -120,7 +138,7 @@ if (isProd) {
                 to: path.resolve(__dirname, 'dist'),
             }
         ])
-    );
+    )
 } else {
     config.devtool = '#cheap-module-source-map';
 }
