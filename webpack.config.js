@@ -25,13 +25,14 @@ const entries = pages.reduce((acc, page, i) => {
 
 const criticalCSS = new ExtractTextPlugin('[name]-critical.css')
 const externalCSS = new ExtractTextPlugin('[name].css')
-const processStyles = [{
-    loader: 'css-loader',
-    options: {
-        importLoaders: 1,
-        sourceMap: !isProd,
-        minimize: !isProd,
-    }
+const processStyles = [
+    {
+        loader: 'css-loader',
+        options: {
+            importLoaders: 1,
+            sourceMap: !isProd,
+            minimize: !isProd,
+        }
     }, {
         loader: 'postcss-loader',
         options: {
@@ -43,7 +44,8 @@ const processStyles = [{
             sourceMap: !isProd,
             'resolve url': true,
         }
-}]
+    }
+]
 
 
 const config = {
