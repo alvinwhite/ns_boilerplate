@@ -12,7 +12,7 @@ const pages = getDirectoriesBasenames(path.resolve('./src/pages'))
 
 const instances = pages.map(page => {
     return new HtmlWebpackPlugin({
-        template: `./pages/${page}/${page}.pug`,
+        template:`./pages/${page}/${page}.pug`,
         excludeAssets: [/\-critical.css$/],
         filename: `${page}.html`
     })
@@ -32,17 +32,17 @@ const processStyles = [{
         sourceMap: !isProd,
         minimize: !isProd,
     }
-}, {
-    loader: 'postcss-loader',
-    options: {
-        sourceMap: !isProd,
-    }
-}, {
-    loader: 'stylus-loader',
-    options: {
-        sourceMap: !isProd,
-        'resolve url': true,
-    }
+    }, {
+        loader: 'postcss-loader',
+        options: {
+            sourceMap: !isProd,
+        }
+    }, {
+        loader: 'stylus-loader',
+        options: {
+            sourceMap: !isProd,
+            'resolve url': true,
+        }
 }]
 
 
@@ -61,8 +61,7 @@ const config = {
         }
     },
     module: {
-        rules: [
-        {
+        rules: [{
             test: /\.js$/,
             loader: 'eslint-loader',
             enforce: 'pre',
@@ -109,10 +108,7 @@ const config = {
         compress: true,
     },
     plugins: [
-        new HtmlWebpackPlugin({
-            template: './pages/index/index.pug',
-            excludeAssets: [/\-critical.css$/]
-        }),
+        ...instances,
         new HtmlWebpackExcludeAssetsPlugin(),
         criticalCSS,
         externalCSS,
@@ -140,7 +136,7 @@ if (isProd) {
         ])
     )
 } else {
-    config.devtool = '#cheap-module-source-map';
+    config.devtool = '#cheap-module-source-map'
 }
 
-module.exports = config;
+module.exports = config

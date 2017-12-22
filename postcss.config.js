@@ -8,4 +8,4 @@ module.exports = ({ file, options, env }) => ({
         },
         'cssnano': env === 'production' ? {} : false,
     }
-});
+})
