@@ -1,28 +1,8 @@
-heading_fonts($options = {}) {
+_col(n) {
+    n*(100%/12)
+}
 
-    $size =  $options.size      || 'md'
-    $color = $options.color     || $text_main
-    $weight = $options.weight   || bold
-    $family = $options.family   || $font_headings
-
-    font-family: $family;
-    font-size: lookup( '$fz_heading_' + $size);
-    font-weight: $weight;
-    color: $color;
-
-    // Adjust font-size for lg headings
-    if ($size == 'lg') {
-    }
-
-    // Adjust font-size for md headings
-    if($size == 'md') {
-    }
-
-    // Adjust font-size for sm headings
-    if($size == 'sm') {
-    }
-
-    // Adjust font-size for xs headings
-    if ($size == 'xs') {
-    }
+$browser_context = 16
+_em($pixels, $context = $browser_context) {
+    (($pixels/$context))em;
 }
