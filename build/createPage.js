@@ -5,7 +5,6 @@ const dirs = require('./dirs')
 const [ execPath, selfPath, pageName ] = process.argv
 const existingPages = getDirectoriesBasenames(`${dirs.pages}`)
 
-console.log(existingPages)
 if(existingPages.includes(pageName)) {
     throw new Error(`Page with the name ${pageName} already exists`) 
 }
