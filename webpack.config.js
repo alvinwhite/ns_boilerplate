@@ -5,7 +5,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const StyleExtHtmlWebpackPlugin = require('style-ext-html-webpack-plugin')
 const HtmlWebpackExcludeAssetsPlugin = require('html-webpack-exclude-assets-plugin')
-const { getDirectoriesBasenames } = require('./utils.js')
+const { getDirectoriesBasenames } = require('./build/utils.js')
 const isProd = process.env.NODE_ENV.trim() == 'production'
 
 const pages = getDirectoriesBasenames(path.resolve('./src/pages'))

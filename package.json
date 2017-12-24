@@ -8,7 +8,9 @@
   "license": "MIT",
   "scripts": {
     "dev": "set NODE_ENV=development && node_modules/.bin/webpack-dev-server --host 0.0.0.0",
-    "prod": "set NODE_ENV=production && rm -rf ./dist && webpack -p"
+    "prod": "set NODE_ENV=production && rm -rf ./dist && webpack -p",
+    "create::component": "node ./build/createComponent.js",
+    "create::page": "node ./build/createPage.js"
   },
   "dependencies": {
     "normalize.css": "^7.0.0"
