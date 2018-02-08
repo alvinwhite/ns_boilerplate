@@ -56,9 +56,14 @@ for $name, $breakpoint in $grid {
             }
         }
 
-        .grid:not(.grid--fluid) {
+        .grid {
             width: $breakpoint.container;
             max-width: 100%
+        }
+
+        .grid--fluid {
+            width: 100%;
+            max-width: none;
         }
     }
 }
@@ -69,11 +74,20 @@ for $name, $breakpoint in $grid {
     margin-right: -($base.gutters);
     margin-left: -($base.gutters);
 
+    &--centred {
+        justify-content: center;
+        text-align: center;
+    }
+
+    &--align_center {
+        align-items: center;
+    }
+
     &--gutters_none {
         margin-right: 0;
         margin-left: 0
 
-        .grid__col {
+        & > .row__col {
             padding-right: 0;
             padding-left: 0
         }
@@ -115,7 +129,11 @@ for $name, $breakpoint in $grid {
                 flex: 0 0 $i * (100% / $base.columns);
                 max-width: $i * (100% / $base.columns);
             }
-            .grid__col--offset-{$name}_{$i} {
+            .row__col--{$name}_auto {
+                flex: 0 0 auto;
+                width: auto;
+            }
+            .row__offset--{$name}_{$i} {
                 margin-left: $i * (100% / $base.columns);
             }
         }
