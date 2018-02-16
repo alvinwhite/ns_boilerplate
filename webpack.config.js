@@ -117,6 +117,10 @@ const config = {
         new StyleExtHtmlWebpackPlugin({
             chunk: '[name]-critical.css',
             position: 'head-top'
+        }),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'commons',
+            filename: 'commons.js',
         })
     ]
 }
