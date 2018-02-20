@@ -3,58 +3,47 @@ html {
     cursor: default;
     box-sizing: border-box;
 
-    @media (min-width: 375px) {
+    @media (min-width: 375px) 
         font-size: 60%;
-    }
+    
 
     @media (min-width: $xl) {
         font-size: 62.5%; // 10 px = 1rem now 
-    }
-}
-
+    
 *,
 :after,
-:before {
+:before 
     -webkit-box-sizing: inherit;
     box-sizing: inherit
-}
 
-ol, ul {
+ol, ul 
     list-style: none;
-}
 
-a {
+a 
     color: inherit;
     text-decoration: none;
 
-    &:hover {
+    &:hover 
         color: inherit;
         text-decoration: none;
         outline: none;
-    }
-
-    &:focus {
+    
+    &:focus 
         color: inherit; 
         text-decoration: none;
         outline: none;
-    }
-}
-
-button, input {
-    &:focus {
+    
+button, input 
+    &:focus 
         outline: none;
-    }
-}
-
-input[type=text]::-ms-clear {
+    
+input[type=text]::-ms-clear 
     display: none;
-}
 
-.page {
+.page 
     position: relative;
     font-family: $ff_main;
     font-size: $fz_text;
     line-height: 1.25;
     color: $color_text_main;
     background-color: #fff;
-}

@@ -68,7 +68,7 @@ for $name, $breakpoint in $grid {
     }
 }
 
-.grid__row {
+.row {
     display: flex;
     flex-wrap: wrap;
     margin-right: -($base.gutters);
@@ -95,7 +95,7 @@ for $name, $breakpoint in $grid {
 }
 
 
-.grid__col {
+.row__col {
     position: relative;
     width: 100%;
     min-height: 1px;
@@ -113,11 +113,11 @@ for $name, $breakpoint in $grid {
 }
 
 for $i in (1..$base.columns) {
-        .grid__col--{$i} {
+        .row__col--{$i} {
             flex: 0 0 $i * (100% / $base.columns);
             max-width: $i * (100% / $base.columns);
         }
-        .grid__col--offset-{$i} {
+        .row__offset-{$i} {
             margin-left: $i * (100% / $base.columns);
         }
     }
@@ -125,7 +125,7 @@ for $i in (1..$base.columns) {
 for $name, $breakpoint in $grid {
     @media (min-width: $breakpoint.viewport) {
         for $i in (1..$base.columns) {
-            .grid__col--{$name}_{$i} {
+            .row__col--{$name}_{$i} {
                 flex: 0 0 $i * (100% / $base.columns);
                 max-width: $i * (100% / $base.columns);
             }
