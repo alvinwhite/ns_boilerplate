@@ -15,8 +15,8 @@ Comamnd name | Description
 --- | ---
 dev | Starts developing server
 prod | Builds production version
-create::component `{component name}` | Creates empty component with Pug, Stylus and JavaScript files
-create::page `{component name}` | Creates page with the same files as for a component, but also adds `{component name}-critical.styl` file for inline styles 
+create::component `{component name}` | Creates empty component in components directory with Pug, Stylus and JavaScript files
+create::page `{component name}` | Creates page in pages directory with the same files as for a component, but also adds `{component name}-critical.styl` file for inline styles 
 
 
 # Notes
