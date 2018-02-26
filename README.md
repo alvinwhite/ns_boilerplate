@@ -3,6 +3,7 @@
 Open command line in the proejct directory and run  `yarn install`
 
 Then run `yarn run dev` to start a developemnt server
+
 You also can use npm instead of yarn obviously ;)
 
 # Other commands
