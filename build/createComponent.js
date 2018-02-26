@@ -17,7 +17,7 @@ mkdirSync(componentPath)
 //styles 
 writeFileSync(`${componentPath}/${componentName}.styl`, '')
 //markup
-writeFileSync(`${componentPath}/${componentName}.pug`, '')
+writeFileSync(`${componentPath}/${componentName}.pug`, `mixin ${componentName}()`)
 //js
 writeFileSync(`${componentPath}/${componentName}.js`, '')
 

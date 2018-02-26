@@ -7,8 +7,9 @@
   "author": "Alvvi ",
   "license": "MIT",
   "scripts": {
-    "dev": "set NODE_ENV=development && node_modules/.bin/webpack-dev-server --host 0.0.0.0",
-    "prod": "set NODE_ENV=production && rm -rf ./dist && webpack -p",
+    "dev": "cross-env NODE_ENV=development node_modules/.bin/webpack-dev-server --host 0.0.0.0",
+    "prod": "cross-env NODE_ENV=production npm run prod:afterEnv",
+    "prod:afterEnv": "rm -rf ./dist && webpack -p",
     "create::component": "node ./build/createComponent.js",
     "create::page": "node ./build/createPage.js"
   },
@@ -23,6 +24,7 @@
     "babel-preset-env": "^1.6.0",
     "bemto.pug": "^2.1.0",
     "copy-webpack-plugin": "^4.0.1",
+    "cross-env": "^5.1.3",
     "css-loader": "^0.28.4",
     "cssnano": "^3.10.0",
     "eslint": "^3.19.0",
