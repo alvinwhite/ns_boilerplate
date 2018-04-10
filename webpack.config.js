@@ -94,6 +94,9 @@ const config = {
                 }
             }]
         }, {
+            test: /\.svg$/,
+            loader: 'svg-sprite-loader'
+        }, {
             test: /\.pug$/,
             use: ['html-loader', {
                 loader: 'pug-html-loader',
