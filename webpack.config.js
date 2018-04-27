@@ -13,7 +13,7 @@ const pages = getDirectoriesBasenames(path.resolve('./src/pages'))
 const instances = pages.map(page => {
     return new HtmlWebpackPlugin({
         template:`./pages/${page}/${page}.pug`,
-        excludeAssets: [/\-critical.css$/],
+        excludeAssets: [/-critical.css$/],
         filename: `${page}.html`
     })
 })
@@ -25,7 +25,7 @@ const entries = pages.reduce((acc, page, i) => {
 
 const criticalCSS = new ExtractTextPlugin('[name]-critical.css')
 const externalCSS = new ExtractTextPlugin('[name].css')
-const processStyles = [
+const cssLoaderChain = [
     {
         loader: 'css-loader',
         options: {
@@ -46,6 +46,13 @@ const processStyles = [
         }
     }
 ]
+const fileLoaderChain = [{
+    loader: 'file-loader',
+    query: {
+        useRelativePath: false,
+        name: '[path][name].[ext]'
+    }
+}]
 
 
 const config = {
@@ -79,23 +86,24 @@ const config = {
             }
         }, {
             test: /\.styl$/,
-            exclude: /\-critical.styl$/,
-            use: externalCSS.extract({ use: processStyles })
+            exclude: /-critical.styl$/,
+            use: externalCSS.extract({ use: cssLoaderChain })
         }, {
-            test: /\-critical.styl$/,
-            use: criticalCSS.extract({ use: processStyles })
+            test: /-critical.styl$/,
+            use: criticalCSS.extract({ use: cssLoaderChain })
         }, {
             test: /\.(svg|png|jpg|gif|otf|ttf|woff|woff2)$/,
-            use: [{
-                loader: 'file-loader',
-                query: {
-                    useRelativePath: false,
-                    name: '[path][name].[ext]'
-                }
-            }]
+            use: fileLoaderChain
         }, {
             test: /\.svg$/,
-            loader: 'svg-sprite-loader'
+            include: path.resolve(__dirname, 'node_modules'),
+            use: fileLoaderChain
+        }, {
+            test: /\.svg$/,
+            exclude: path.resolve(__dirname, 'node_modules'),
+            use:  {
+                loader: 'svg-sprite-loader'
+            }
         }, {
             test: /\.pug$/,
             use: ['html-loader', {
@@ -106,6 +114,7 @@ const config = {
             }]
         }]
     },
+    devtool: isProd ? false : '#cheap-module-source-map',
     devServer: {
         contentBase: path.resolve(__dirname, 'public'),
         watchContentBase: true,
@@ -124,28 +133,21 @@ const config = {
         new webpack.optimize.CommonsChunkPlugin({
             name: 'commons',
             filename: 'commons.js',
-        })
-    ]
-}
-
-
-if (isProd) {
-    config.plugins.push(
-        new webpack.optimize.UglifyJsPlugin({
+        }),
+        isProd && new webpack.optimize.UglifyJsPlugin({
             compress: {
                 warnings: false
             },
             sourceMap: true
         }),
-        new CopyWebpackPlugin([
+        isProd && new CopyWebpackPlugin([
             {
                 from: path.resolve(__dirname, 'public'),
                 to: path.resolve(__dirname, 'dist'),
             }
         ])
-    )
-} else {
-    config.devtool = '#cheap-module-source-map'
+    ].filter(Boolean)
 }
+
 
 module.exports = config
