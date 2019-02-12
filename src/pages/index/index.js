@@ -1,4 +1,3 @@
-import './index-critical.styl'
-import './index.styl'
+import './index.scss'
 
 import 'Components/Welcome/Welcome'

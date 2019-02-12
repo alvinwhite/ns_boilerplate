@@ -15,7 +15,7 @@ const pagePath = `${dirs.pages}/${pageName}`
 mkdirSync(pagePath)
 
 //styles 
-writeFileSync(`${pagePath}/${pageName}.styl`, '')
+writeFileSync(`${pagePath}/${pageName}.scss`, '')
 //markup
 writeFileSync(`${pagePath}/${pageName}.pug`, '')
 //js

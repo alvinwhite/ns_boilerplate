@@ -1,29 +1,35 @@
-.welcome 
+.welcome {
     @extend .grid;
 
-    &__row 
+    &__row {
         @extend .row;
         justify-content: center;
         align-items: center;
         min-height: 100vh;
+    }
 
-    &__col 
-        @extend .row__col, .row__col--12;
+    &__col {
+        @extend .col, .col--12;
         text-align: center;
+    }
 
-    &__logo 
+    &__logo {
         display: inline-block;
         padding: 2rem;
         border: 6px solid #000;
         border-radius: 50%;
         font-size: 6.4rem;
+    }
     
-    &__heading 
+    &__heading {
         margin: 3rem 0 2rem;
-        font-family: $ff_headings;
+        font-family: $ff_accent;
         font-size: $fz_heading_lg;
         font-weight: bold;
+    }
 
-    &__text 
+    &__text {
         margin: 0;
         font-size: 2.4rem;
+    }
+}

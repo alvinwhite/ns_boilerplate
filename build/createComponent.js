@@ -15,7 +15,7 @@ const componentPath = `${dirs.components}/${componentName}`
 mkdirSync(componentPath)
 
 //styles 
-writeFileSync(`${componentPath}/${componentName}.styl`, '')
+writeFileSync(`${componentPath}/${componentName}.scss`, '')
 //markup
 writeFileSync(`${componentPath}/${componentName}.pug`, `mixin ${componentName}()`)
 //js

@@ -1,18 +1,18 @@
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const StyleExtHtmlWebpackPlugin = require('style-ext-html-webpack-plugin')
-const HtmlWebpackExcludeAssetsPlugin = require('html-webpack-exclude-assets-plugin')
-const { getDirectoriesBasenames } = require('./build/utils.js')
+const {
+    getDirectoriesBasenames
+} = require('./build/utils.js')
 const isProd = process.env.NODE_ENV.trim() == 'production'
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 const pages = getDirectoriesBasenames(path.resolve('./src/pages'))
 
 const instances = pages.map(page => {
     return new HtmlWebpackPlugin({
-        template:`./pages/${page}/${page}.pug`,
+        template: `./pages/${page}/${page}.pug`,
         excludeAssets: [/-critical.css$/],
         filename: `${page}.html`
     })
@@ -23,29 +23,7 @@ const entries = pages.reduce((acc, page, i) => {
     return acc
 }, {})
 
-const criticalCSS = new ExtractTextPlugin('[name]-critical.css')
-const externalCSS = new ExtractTextPlugin('[name].css')
-const cssLoaderChain = [
-    {
-        loader: 'css-loader',
-        options: {
-            importLoaders: 1,
-            sourceMap: !isProd,
-            minimize: !isProd,
-        }
-    }, {
-        loader: 'postcss-loader',
-        options: {
-            sourceMap: !isProd,
-        }
-    }, {
-        loader: 'stylus-loader',
-        options: {
-            sourceMap: !isProd,
-            'resolve url': true,
-        }
-    }
-]
+const externalCSS = new MiniCssExtractPlugin('[name].css')
 const fileLoaderChain = [{
     loader: 'file-loader',
     query: {
@@ -63,12 +41,24 @@ const config = {
         path: path.resolve(__dirname, 'dist'),
     },
     resolve: {
-        extensions: ['.js', '.styl', '.pug'],
+        extensions: ['.js', '.scss', '.pug'],
         alias: {
             'Components': path.resolve(__dirname, 'src/components/'),
             '@': path.resolve(__dirname, 'src')
         }
     },
+    optimization: {
+        splitChunks: {
+            name: 'commons',
+            minChunks: 2,
+        }
+    },
+    devServer: {
+        hot: false,
+        open: true
+    },
+    mode: isProd ? 'production' : 'development',
+    watch: !isProd,
     module: {
         rules: [{
             test: /\.js$/,
@@ -81,16 +71,32 @@ const config = {
         }, {
             test: /\.js$/,
             include: path.resolve(__dirname, 'src'),
-            use: {
-                loader: 'babel-loader',
-            }
+            use: 'babel-loader',
         }, {
-            test: /\.styl$/,
-            exclude: /-critical.styl$/,
-            use: externalCSS.extract({ use: cssLoaderChain })
-        }, {
-            test: /-critical.styl$/,
-            use: criticalCSS.extract({ use: cssLoaderChain })
+            test: /\.scss$/,
+            use: [
+                {
+                    loader: MiniCssExtractPlugin.loader
+                },
+                {
+                    loader: 'css-loader',
+                    options: {
+                        importLoaders: 1,
+                        sourceMap: !isProd,
+                        minimize: isProd,
+                    }
+                }, {
+                    loader: 'postcss-loader',
+                    options: {
+                        sourceMap: !isProd,
+                    }
+                }, {
+                    loader: 'sass-loader',
+                    options: {
+                        sourceMap: !isProd,
+                    }
+                }
+            ]
         }, {
             test: /\.(svg|png|jpg|gif|otf|ttf|woff|woff2)$/,
             use: fileLoaderChain
@@ -101,9 +107,7 @@ const config = {
         }, {
             test: /\.svg$/,
             exclude: path.resolve(__dirname, 'node_modules'),
-            use:  {
-                loader: 'svg-sprite-loader'
-            }
+            use: 'svg-sprite-loader'
         }, {
             test: /\.pug$/,
             use: ['html-loader', {
@@ -114,40 +118,20 @@ const config = {
             }]
         }]
     },
-    devtool: isProd ? false : '#cheap-module-source-map',
-    devServer: {
-        contentBase: path.resolve(__dirname, 'public'),
-        watchContentBase: true,
-        clientLogLevel: 'none',
-        compress: true,
-    },
     plugins: [
         ...instances,
-        new HtmlWebpackExcludeAssetsPlugin(),
-        criticalCSS,
         externalCSS,
-        new StyleExtHtmlWebpackPlugin({
-            chunk: '[name]-critical.css',
-            position: 'head-top'
-        }),
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'commons',
-            filename: 'commons.js',
-        }),
-        isProd && new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false
-            },
-            sourceMap: true
-        }),
-        isProd && new CopyWebpackPlugin([
-            {
-                from: path.resolve(__dirname, 'public'),
-                to: path.resolve(__dirname, 'dist'),
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: JSON.stringify(process.env.NODE_ENV)
             }
-        ])
+        }),
+        isProd && new CopyWebpackPlugin([{
+            from: path.resolve(__dirname, 'public'),
+            to: path.resolve(__dirname, 'dist'),
+        }])
     ].filter(Boolean)
 }
-
 
 module.exports = config

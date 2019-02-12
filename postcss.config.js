@@ -1,6 +1,4 @@
-const path = require('path')
-
-module.exports = ({ file, options, env }) => ({
+module.exports = ({ env }) => ({
     plugins: {
         'postcss-flexbugs-fixes': {},
         'autoprefixer': {
